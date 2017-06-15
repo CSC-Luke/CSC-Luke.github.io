@@ -1,0 +1,178 @@
+<html>
+<head>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
+   integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
+   crossorigin=""/>
+
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
+   integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
+   crossorigin=""></script>
+
+</head>
+<body>
+
+<div id="mapid" style="width: 600px; height: 400px;"></div>
+<div>
+Start at start
+Go to location 1 <input type="text" id="location1" name="location1">
+Go to location 2 <input type="text" id="location2" name="location2">
+Go to location 3 <input type="text" id="location3" name="location3">
+Go to location 4 <input type="text" id="location4" name="location4">
+Go to location 5 <input type="text" id="location5" name="location5">
+Go to location 6 <input type="text" id="location6" name="location6">
+Go to location 7 <input type="text" id="location7" name="location7">
+Go to location 8 <input type="text" id="location8" name="location8">
+Go to location 9 <input type="text" id="location9" name="location9">
+Go to location 10 <input type="text" id="location10" name="location10">
+Go to location 11 <input type="text" id="location11" name="location11">
+Go to location 12 <input type="text" id="location12" name="location12">
+Go to location 13 <input type="text" id="location13" name="location13">
+Go to location 14 <input type="text" id="location14" name="location14">
+Go to location 15 <input type="text" id="location15" name="location15">
+Go to location 16 <input type="text" id="location16" name="location16">
+Go to location 17 <input type="text" id="location17" name="location17">
+Go to location 18 <input type="text" id="location18" name="location18">
+Go to location 19 <input type="text" id="location19" name="location19">
+Go to location 20 <input type="text" id="location20" name="location20">
+Go to location 21 <input type="text" id="location21" name="location21">
+Go to location 22 <input type="text" id="location22" name="location22">
+<input type="button" value="Calculate" onclick="calc()" />
+<p id="result" name="r1">
+</div>
+
+
+<script>
+	var points = [ 	[-46, 166.5, "A"],
+			[-45.4, 167.92, "B"],
+			[-46.32, 168.15, "C"],
+			[-46.45, 168.6, "D"],
+			[-46.55, 168.23, "E"],
+			[-46.23, 167.26, "F"],
+			[-46.19, 168.45, "G"],
+			[-45.7, 167.86, "H"],
+			[-46.2, 166.6, "I"],
+			[-45.8, 167.55, "J"],
+			[-45.82, 166.76, "K"],
+			[-45.95, 168.22, "L"],
+			[-45.5, 167.34, "M"],
+			[-45.54, 168.12, "N"],
+			[-45.77, 168.5, "O"],
+			[-45.65, 167.12, "P"],
+			[-45.46, 168.22, "Q"],
+			[-46.04, 167.20, "R"],
+			[-46.03, 167.60, "S"],
+			[-46.26, 167.73, "T"],
+			[-46.04, 167.95, "U"], 
+			[-45.85, 167.07, "V"] ]	
+
+	var mymap = L.map('mapid').setView([-46.3, 168.2], 8);
+
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+		id: 'mapbox.streets'
+	}).addTo(mymap);
+	
+	for (i=0; i<points.length; i++){
+		L.marker([points[i][0], points[i][1]]).addTo(mymap).bindPopup(points[i][2]).openPopup();
+	}
+	
+
+
+	L.marker([-45.53, 167.65]).addTo(mymap).bindPopup("Starting and finishing point").openPopup();
+
+	function calculate_distance(lat1, lon1, lat2, lon2) {
+		var lat_dif = lat1 - lat2;
+		var lon_dif = lon1 - lon2;
+		var d = Math.sqrt(lat_dif*lat_dif + lon_dif*lon_dif);
+		return d;
+	}
+	
+	function find_matching_coords(letter, array){
+		i = 0;
+		while (i < array.length ){
+			if (array[i][2].valueOf() == letter.valueOf()){
+				return [array[i][0], array[i][1]];
+			}
+			i++;
+		}
+		return -1;
+	}
+
+	function calc(){
+		var the_points= [ 	
+		[-46, 166.5, "A"],
+		[-45.4, 167.92, "B"],
+		[-46.32, 168.15, "C"],
+		[-46.45, 168.6, "D"],
+		[-46.55, 168.23, "E"],
+		[-46.23, 167.26, "F"],
+		[-46.19, 168.45, "G"],
+		[-45.7, 167.86, "H"],
+		[-46.2, 166.6, "I"],
+		[-45.8, 167.55, "J"],
+		[-45.82, 166.76, "K"],
+		[-45.95, 168.22, "L"],
+		[-45.5, 167.34, "M"],
+		[-45.54, 168.12, "N"],
+		[-45.77, 168.5, "O"],
+		[-45.65, 167.12, "P"],
+		[-45.46, 168.22, "Q"],
+		[-46.04, 167.20, "R"],
+		[-46.03, 167.60, "S"],
+		[-46.26, 167.73, "T"],
+		[-46.04, 167.95, "U"], 
+		[-45.85, 167.07, "V"] 
+		];
+				
+		window.alert("sqwag");
+
+		text_box_contents = []
+		text_box_contents.push(document.getElementById("location1").value);
+		text_box_contents.push(document.getElementById("location2").value);
+		text_box_contents.push(document.getElementById("location3").value);
+		text_box_contents.push(document.getElementById("location4").value);
+		text_box_contents.push(document.getElementById("location5").value);
+		text_box_contents.push(document.getElementById("location6").value);
+		text_box_contents.push(document.getElementById("location7").value);
+		text_box_contents.push(document.getElementById("location8").value);
+		text_box_contents.push(document.getElementById("location9").value);
+		text_box_contents.push(document.getElementById("location10").value);
+		text_box_contents.push(document.getElementById("location11").value);
+		text_box_contents.push(document.getElementById("location12").value);
+		text_box_contents.push(document.getElementById("location13").value);
+		text_box_contents.push(document.getElementById("location14").value);
+		text_box_contents.push(document.getElementById("location15").value);
+		text_box_contents.push(document.getElementById("location16").value);
+		text_box_contents.push(document.getElementById("location17").value);
+		text_box_contents.push(document.getElementById("location18").value);
+		text_box_contents.push(document.getElementById("location19").value);
+		text_box_contents.push(document.getElementById("location20").value);
+		text_box_contents.push(document.getElementById("location21").value);
+		text_box_contents.push(document.getElementById("location22").value);
+
+		var dist = 0;
+		var i = 1;
+		while (i < the_points.length){
+			point_a = find_matching_coords(text_box_contents[i-1], the_points);
+			point_b = find_matching_coords(text_box_contents[i], the_points);
+			dist = dist + calculate_distance(point_a[0], point_a[1], point_b[0], point_b[1]);
+			i++;
+		}
+		
+		dist = dist * 111; 
+		window.alert(dist);
+
+
+	}
+
+
+	var x = find_matching_coords("B", points);
+	window.alert(x[0]);
+
+</script>
+</body>
+</html>
